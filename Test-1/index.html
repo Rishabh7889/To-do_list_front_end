@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Todo List</h1>
+      <div class="input-container">
+        <input type="text" id="task" placeholder="Add a new task..." />
+        <button id="addTask">Add</button>
+      </div>
+      <ul id="taskList"></ul>
+      <p>Total tasks: <span id="taskCount">0</span></p>
+    </div>
+
+    <script>
+      // Get elements from the DOM
+      const taskInput = document.getElementById("task");
+      const addTaskButton = document.getElementById("addTask");
+      const taskList = document.getElementById("taskList");
+      const taskCount = document.getElementById("taskCount");
+
+      // Add a new task
+      addTaskButton.addEventListener("click", () => {
+        const taskText = taskInput.value.trim();
+
+        if (taskText !== "") {
+          const li = document.createElement("li");
+          li.innerHTML = `
+                    <input type="checkbox" class="checkbox">
+                    <span>${taskText}</span>
+                    <button class="delete-button">Delete</button>
+                `;
+
+          // Add event listeners for checkbox and delete button
+          const checkbox = li.querySelector(".checkbox");
+          const deleteButton = li.querySelector(".delete-button");
+
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+              li.style.textDecoration = "line-through";
+            } else {
+              li.style.textDecoration = "none";
+            }
+          });
+
+          deleteButton.addEventListener("click", () => {
+            li.remove();
+            updateTaskCount();
+          });
+
+          taskList.appendChild(li);
+          taskInput.value = "";
+          updateTaskCount();
+        }
+      });
+
+      // Function to update task count
+      function updateTaskCount() {
+        taskCount.textContent = taskList.children.length;
+      }
+    </script>
+  </body>
+</html>
